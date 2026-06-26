@@ -99,6 +99,15 @@
     color: #2C49C9;
   }
 
+  .logo-sub {
+    font-family: 'Patrick Hand', cursive;
+    font-size: clamp(11px, 2vw, 14px);
+    color: #6A655C;
+    margin-top: 6px;
+    text-align: center;
+    letter-spacing: 0.01em;
+  }
+
   /* ── Board ── */
   .board {
     display: flex;
@@ -291,10 +300,12 @@
     gap: 5px;
     margin-top: auto;
     padding-top: 6px;
+    flex-wrap: wrap;
   }
   .back-thumb {
-    flex: 1;
-    aspect-ratio: 1;
+    width: 56px;
+    height: 56px;
+    flex-shrink: 0;
     overflow: hidden;
     cursor: pointer;
     border: 2px solid white;
@@ -313,6 +324,9 @@
     display: block;
   }
   .back-thumb-more {
+    width: 56px;
+    height: 56px;
+    flex-shrink: 0;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -428,6 +442,7 @@
     <div class="logo-tape"></div>
     <span class="logo-line1">jenn &amp; jared's</span>
     <div class="logo-line2"><span class="cat">CAT</span>alogue</div>
+    <div class="logo-sub">every cat who's graced our couch — newest first</div>
   </div>
 </div>
 
@@ -567,15 +582,6 @@ function buildCard(cat) {
     r.appendChild(v);
     return r;
   }
-
-  const nameBack = document.createElement('div');
-  nameBack.style.cssText = 'font-family:"Shantell Sans",cursive;font-weight:700;font-size:15px;color:#1F1F1D;margin-bottom:2px;word-break:break-word;';
-  nameBack.textContent = cat.name + memorialMark;
-  back.appendChild(nameBack);
-
-  const divider = document.createElement('div');
-  divider.className = 'back-divider';
-  back.appendChild(divider);
 
   // New format: who / where / when / status
   back.appendChild(row('who', cat.name));
