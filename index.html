@@ -39,7 +39,7 @@
     background-image: url('corkboard.jpg');
     background-size: cover;
     background-position: center;
-    background-attachment: fixed;
+    background-attachment: scroll;
     border: 14px solid;
     border-color: #7D5634 #5A3A22 #5A3A22 #7D5634;
     box-shadow: inset 0 0 50px rgba(64,40,16,.34);
@@ -436,9 +436,15 @@
     .board { gap: 28px 20px; }
   }
   @media (max-width: 560px) {
-    body { border-width: 8px; padding: 20px 12px 40px; }
-    .board { gap: 32px 16px; }
-    .polaroid-btn { width: 185px; }
+    body { border-width: 6px; padding: 16px 10px 40px; }
+    .board {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px 12px;
+      justify-items: center;
+    }
+    .polaroid-btn { width: 100%; max-width: 180px; }
+    .logo-line2 { font-size: clamp(32px, 10vw, 48px); }
   }
 </style>
 </head>
