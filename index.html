@@ -68,11 +68,11 @@
 
   .logo-tape {
     position: absolute;
-    top: -10px;
+    top: -16px;
     left: 50%;
     transform: translateX(-50%) rotate(-3deg);
-    width: 64px;
-    height: 22px;
+    width: 110px;
+    height: 32px;
     z-index: 2;
     background: repeating-linear-gradient(45deg, rgba(216,74,58,.6) 0 5px, rgba(216,74,58,.34) 5px 10px);
   }
@@ -237,6 +237,7 @@
     line-height: 1.2;
     word-break: break-word;
     hyphens: auto;
+    text-transform: lowercase;
   }
   .cat-desc {
     font-family: 'Patrick Hand', cursive;
@@ -246,6 +247,7 @@
     display: block;
     margin-top: 3px;
     line-height: 1.4;
+    text-transform: lowercase;
   }
 
   /* ── Current badge ── */
@@ -286,6 +288,7 @@
     color: #1F1F1D;
     line-height: 1.3;
     word-break: break-word;
+    text-transform: lowercase;
   }
 
   .back-divider {
@@ -476,10 +479,10 @@ const cats = [
   { id: 10, name: "Grape Juice", description: "Introvert, hid in corner of bathroom", status: "Adopted", location: "Seattle, WA", intake: "April 2023", exit: "June 2023", pair: "Home Fries", hero: "photos/10/COVER.jpg", extra: ["photos/10/IMG_5701.jpg","photos/10/IMG_5723.jpg"] },
   { id: 11, name: "Home Fries", description: "Probably should have been a barn cat", status: "Adopted", location: "Seattle, WA", intake: "April 2023", exit: "June 2023", pair: "Grape Juice", hero: "photos/11/COVER.jpg", extra: ["photos/11/IMG_5643.jpg","photos/11/IMG_5668.jpg"] },
   { id: 12, name: "Nora", description: "One of our favorites, playful cutie", status: "Adopted", location: "Seattle, WA", intake: "August 2023", exit: "August 2023", pair: null, hero: "photos/12/COVER.jpg", extra: ["photos/12/IMG_6161.jpg","photos/12/IMG_6172.jpg"] },
-  { id: 13, name: "Elsa", description: "AKA Cat 2, wasn't really friends with Anna", status: "Adopted", location: "Boulder, CO", intake: "March 2024", exit: "March 2024", pair: "Anna", hero: "photos/13/COVER.jpg", extra: ["photos/13/IMG_7816.jpg","photos/13/IMG_7907.jpg"] },
-  { id: 14, name: "Anna", description: "AKA Cat 1, wasn't really friends with Elsa", status: "Adopted", location: "Boulder, CO", intake: "March 2024", exit: "March 2024", pair: "Elsa", hero: "photos/14/COVER.jpg", extra: ["photos/14/IMG_7893.jpg"] },
-  { id: 15, name: "Lacey", description: "AKA Barley Rigs; bullied Corn Rigs", status: "Adopted", location: "Boulder, CO", intake: "April 2024", exit: "April 2024", pair: "Phoebie", hero: "photos/15/COVER.jpg", extra: [] },
-  { id: 16, name: "Phoebie", description: "AKA Corn Rigs; friendly, cuddly, round belly", status: "Adopted", location: "Boulder, CO", intake: "April 2024", exit: "July 2024", pair: "Lacey", hero: "photos/16/COVER.jpg", extra: ["photos/16/IMG_8642.jpg","photos/16/IMG_8802.jpg","photos/16/IMG_8824.jpg"] },
+  { id: 13, name: "Elsa", aka: "cat 2", description: "wasn't really friends with Anna", status: "Adopted", location: "Boulder, CO", intake: "March 2024", exit: "March 2024", pair: "Anna", hero: "photos/13/COVER.jpg", extra: ["photos/13/IMG_7816.jpg","photos/13/IMG_7907.jpg"] },
+  { id: 14, name: "Anna", aka: "cat 1", description: "wasn't really friends with Elsa", status: "Adopted", location: "Boulder, CO", intake: "March 2024", exit: "March 2024", pair: "Elsa", hero: "photos/14/COVER.jpg", extra: ["photos/14/IMG_7893.jpg"] },
+  { id: 15, name: "Lacey", aka: "barley rigs", description: "bullied Corn Rigs", status: "Adopted", location: "Boulder, CO", intake: "April 2024", exit: "April 2024", pair: "Phoebie", hero: "photos/15/COVER.jpg", extra: [] },
+  { id: 16, name: "Phoebie", aka: "corn rigs", description: "friendly, cuddly, round belly", status: "Adopted", location: "Boulder, CO", intake: "April 2024", exit: "July 2024", pair: "Lacey", hero: "photos/16/COVER.jpg", extra: ["photos/16/IMG_8642.jpg","photos/16/IMG_8802.jpg","photos/16/IMG_8824.jpg"] },
   { id: 17, name: "Annie", description: "Essentially a sundial for the apartment", status: "Adopted", location: "Boulder, CO", intake: "July 2024", exit: "December 2024", pair: "Alfie", hero: "photos/17/COVER.jpg", extra: ["photos/17/IMG_8928.jpg","photos/17/IMG_9480.jpg"] },
   { id: 18, name: "Alfie", description: "Matted, smelly, extremely cute", status: "Adopted", location: "Boulder, CO", intake: "July 2024", exit: "December 2024", pair: "Annie", hero: "photos/18/COVER.jpg", extra: ["photos/18/IMG_9298.jpg","photos/18/IMG_9383.jpg","photos/18/IMG_9471.jpg","photos/18/IMG_9978.jpg"] },
   { id: 19, name: "Athena", description: "Fancy breed, owner picked her back up after recovery", status: "Returned to owner", location: "Boulder, CO", intake: "March 2025", exit: "March 2025", pair: null, hero: "photos/19/IMG_0759.jpg", extra: ["photos/19/IMG_0791.jpg"] },
