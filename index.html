@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>jenn & jared's CATalogue</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,100..900,0..100,0..1&family=Shantell+Sans:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    min-height: 100vh;
+    background-color: #C79C5E;
+    background-image:
+      radial-gradient(ellipse at 20% 30%, rgba(160,110,60,.18) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 70%, rgba(100,65,30,.15) 0%, transparent 50%),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23noise)' opacity='0.12'/%3E%3C/svg%3E");
+    border: 14px solid;
+    border-color: #7D5634 #5A3A22 #5A3A22 #7D5634;
+    box-shadow: inset 0 0 50px rgba(64,40,16,.34);
+    padding: 40px 30px 60px;
+    font-family: 'Shantell Sans', cursive;
+  }
+
+  /* ── Logo ── */
+  .logo-wrap {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 44px;
+    position: relative;
+  }
+
+  .logo-card {
+    background: #FBF7EC;
+    padding: 14px 30px 16px;
+    transform: rotate(-1.5deg);
+    box-shadow: 2px 4px 14px rgba(64,40,16,.22), 0 1px 3px rgba(64,40,16,.14);
+    position: relative;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .logo-tape {
+    position: absolute;
+    top: -10px;
+    width: 54px;
+    height: 22px;
+    z-index: 2;
+  }
+  .logo-tape-left {
+    left: -8px;
+    transform: rotate(-26deg);
+    background: repeating-linear-gradient(45deg, rgba(216,74,58,.6) 0 5px, rgba(216,74,58,.34) 5px 10px);
+  }
+  .logo-tape-right {
+    right: -8px;
+    transform: rotate(26deg);
+    background: repeating-linear-gradient(45deg, rgba(44,73,201,.55) 0 5px, rgba(44,73,201,.32) 5px 10px);
+  }
+
+  .logo-line1 {
+    font-family: 'Shantell Sans', cursive;
+    font-weight: 600;
+    font-size: clamp(13px, 3vw, 17px);
+    color: #1F1F1D;
+    letter-spacing: 0.04em;
+    line-height: 1.2;
+  }
+
+  .logo-line2 {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: clamp(28px, 7vw, 48px);
+    font-variation-settings: 'opsz' 144, 'SOFT' 70, 'WONK' 1;
+    color: #22221F;
+    line-height: 1.1;
+  }
+  .logo-line2 .cat {
+    font-weight: 900;
+    color: #2C49C9;
+  }
+
+  /* ── Board ── */
+  .board {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 36px 28px;
+    padding: 8px 0;
+  }
+
+  /* ── Washi tape classes ── */
+  .tape-red    { background: repeating-linear-gradient(45deg, rgba(216,74,58,.6) 0 5px, rgba(216,74,58,.34) 5px 10px); }
+  .tape-cobalt { background: repeating-linear-gradient(45deg, rgba(44,73,201,.55) 0 5px, rgba(44,73,201,.32) 5px 10px); }
+  .tape-green  { background: repeating-linear-gradient(45deg, rgba(59,154,85,.55) 0 5px, rgba(59,154,85,.32) 5px 10px); }
+  .tape-amber  { background: rgba(227,167,44,.6); }
+  .tape-cream  { background: radial-gradient(circle at center, rgba(120,90,40,.5) 1.4px, transparent 1.8px) 0 0/8px 8px, rgba(255,238,200,.85); }
+
+  /* ── Polaroid wrapper (button) ── */
+  .polaroid-btn {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    outline: none;
+    width: 220px;
+    position: relative;
+    perspective: 900px;
+    flex-shrink: 0;
+  }
+  .polaroid-btn:focus-visible .flip-inner {
+    outline: 3px solid #2C49C9;
+    outline-offset: 4px;
+    border-radius: 2px;
+  }
+  .polaroid-btn:hover .flip-inner {
+    transform: rotate(0deg) translateY(-9px) scale(1.05) !important;
+    z-index: 10;
+  }
+  .polaroid-btn.flipped:hover .flip-inner {
+    transform: rotateY(180deg) translateY(-9px) scale(1.05) !important;
+  }
+
+  .flip-inner {
+    width: 100%;
+    transform-style: preserve-3d;
+    transition: transform 0.55s cubic-bezier(.4,0,.2,1);
+    position: relative;
+  }
+  .polaroid-btn.flipped .flip-inner {
+    transform: rotateY(180deg) !important;
+  }
+
+  .flip-front,
+  .flip-back {
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    border-radius: 2px;
+  }
+
+  .flip-front {
+    background: #fff;
+    padding: 9px 9px 20px;
+    box-shadow: 3px 5px 16px rgba(64,40,16,.28), 1px 2px 4px rgba(64,40,16,.16);
+    position: relative;
+  }
+
+  .flip-back {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    background: #FBF7EC;
+    transform: rotateY(180deg);
+    box-shadow: 3px 5px 16px rgba(64,40,16,.28);
+    padding: 22px 16px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    overflow: hidden;
+  }
+
+  /* ── Tape strips on polaroid ── */
+  .card-tape {
+    position: absolute;
+    top: -11px;
+    height: 22px;
+    width: 65%;
+    z-index: 3;
+    border-radius: 1px;
+  }
+  .card-tape:first-of-type {
+    left: 50%;
+    transform: translateX(-50%) rotate(-2.5deg);
+  }
+  .card-tape.tape-second {
+    width: 44%;
+    left: 50%;
+    transform: translateX(-75%) rotate(3deg);
+  }
+
+  /* ── Photo ── */
+  .photo-wrap {
+    width: 100%;
+    aspect-ratio: 1;
+    overflow: hidden;
+    background: #e8e0d4;
+  }
+  .photo-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .memorial-photo img {
+    filter: saturate(0.7) sepia(0.1);
+  }
+
+  /* ── Caption ── */
+  .caption {
+    text-align: center;
+    padding-top: 10px;
+  }
+  .cat-name {
+    font-family: 'Shantell Sans', cursive;
+    font-weight: 700;
+    font-size: 18px;
+    color: #1F1F1D;
+    display: block;
+    line-height: 1.2;
+  }
+  .cat-desc {
+    font-family: 'Shantell Sans', cursive;
+    font-weight: 500;
+    font-size: 12px;
+    color: #6A655C;
+    display: block;
+    margin-top: 3px;
+    line-height: 1.4;
+  }
+
+  /* ── Current badge ── */
+  .current-badge {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    background: #2C49C9;
+    color: #fff;
+    font-family: 'Shantell Sans', cursive;
+    font-weight: 600;
+    font-size: 10px;
+    padding: 3px 7px 3px 6px;
+    border-radius: 20px;
+    z-index: 5;
+    white-space: nowrap;
+    line-height: 1.4;
+  }
+
+  /* ── Back content ── */
+  .back-row {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+  }
+  .back-label {
+    font-family: 'Shantell Sans', cursive;
+    font-weight: 600;
+    font-size: 11px;
+    color: #2C49C9;
+    text-transform: lowercase;
+    letter-spacing: 0.03em;
+  }
+  .back-value {
+    font-family: 'Shantell Sans', cursive;
+    font-weight: 500;
+    font-size: 14px;
+    color: #1F1F1D;
+    line-height: 1.35;
+  }
+
+  .back-divider {
+    height: 1px;
+    background: rgba(44,73,201,.15);
+    margin: 4px 0;
+  }
+
+  .more-photos-link {
+    font-family: 'Shantell Sans', cursive;
+    font-weight: 600;
+    font-size: 12px;
+    color: #2C49C9;
+    text-decoration: underline;
+    text-decoration-color: rgba(44,73,201,.4);
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0;
+    margin-top: auto;
+    text-align: left;
+  }
+  .more-photos-link:hover { text-decoration-color: #2C49C9; }
+
+  /* ── Lightbox ── */
+  .lightbox-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(31,31,29,.88);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+  }
+  .lightbox-overlay.open { display: flex; }
+
+  .lightbox-inner {
+    position: relative;
+    max-width: 90vw;
+    max-height: 90vh;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .lightbox-img {
+    max-width: 80vw;
+    max-height: 85vh;
+    object-fit: contain;
+    border: 10px solid #fff;
+    box-shadow: 0 8px 40px rgba(0,0,0,.5);
+  }
+
+  .lightbox-btn {
+    background: rgba(255,255,255,.15);
+    border: 2px solid rgba(255,255,255,.4);
+    color: #fff;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    font-size: 22px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: background 0.15s;
+  }
+  .lightbox-btn:hover { background: rgba(255,255,255,.3); }
+
+  .lightbox-close {
+    position: fixed;
+    top: 20px;
+    right: 24px;
+    background: rgba(255,255,255,.15);
+    border: 2px solid rgba(255,255,255,.4);
+    color: #fff;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .lightbox-close:hover { background: rgba(255,255,255,.3); }
+
+  .lightbox-counter {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: rgba(255,255,255,.7);
+    font-family: 'Shantell Sans', cursive;
+    font-size: 13px;
+  }
+
+  /* ── Reduced motion ── */
+  @media (prefers-reduced-motion: reduce) {
+    .flip-inner {
+      transition: none !important;
+    }
+    .polaroid-btn:hover .flip-inner {
+      transition: none !important;
+    }
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 900px) {
+    body { padding: 28px 18px 48px; }
+    .board { gap: 28px 20px; }
+  }
+  @media (max-width: 560px) {
+    body { border-width: 8px; padding: 20px 12px 40px; }
+    .board { gap: 32px 16px; }
+    .polaroid-btn { width: 185px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="logo-wrap">
+  <div class="logo-card" aria-label="jenn and jared's CATalogue">
+    <div class="logo-tape logo-tape-left"></div>
+    <div class="logo-tape logo-tape-right"></div>
+    <span class="logo-line1">jenn &amp; jared's</span>
+    <div class="logo-line2"><span class="cat">CAT</span>alogue</div>
+  </div>
+</div>
+
+<div class="board" id="board"></div>
+
+<!-- Lightbox -->
+<div class="lightbox-overlay" id="lightbox" role="dialog" aria-modal="true" aria-label="Photo gallery">
+  <button class="lightbox-close" id="lb-close" aria-label="Close gallery">✕</button>
+  <div class="lightbox-inner">
+    <button class="lightbox-btn" id="lb-prev" aria-label="Previous photo">‹</button>
+    <img class="lightbox-img" id="lb-img" src="" alt="">
+    <button class="lightbox-btn" id="lb-next" aria-label="Next photo">›</button>
+  </div>
+  <div class="lightbox-counter" id="lb-counter"></div>
+</div>
+
+<script>
+const cats = [
+  { id: 1, name: "Newman", description: "Our hospice foster; a brave, wide-eyed road tripper and sunbather across the nation", status: "Resting in peace", memorial: true, location: "Seattle, WA + Traveled around the US", intake: "July 2020", exit: "July 2022", pair: null, hero: "photos/01/COVER.jpg", extra: ["photos/01/IMG_9230.jpg","photos/01/IMG_8869.jpg","photos/01/IMG_9441.jpg","photos/01/IMG_0729.jpg","photos/01/IMG_0190.jpg","photos/01/IMG_8678.jpg","photos/01/newman_1.jpg"] },
+  { id: 2, name: "Pip", description: "Spunky, sweet little kiddo", status: "Adopted", location: "Seattle, WA", intake: "August 2022", exit: "September 2022", pair: null, hero: "photos/02/COVER.jpg", extra: ["photos/02/IMG_3931.jpg","photos/02/IMG_3935.jpg"] },
+  { id: 3, name: "Trout", description: "A true gremlin with a scowl and a grunt", status: "Adopted by owner's friend", location: "Seattle, WA", intake: "September 2022", exit: "September 2022", pair: null, hero: "photos/03/IMG_4040.jpg", extra: ["photos/03/IMG_4063.jpg","photos/03/IMG_4091.jpg","photos/03/IMG_4173.jpg"] },
+  { id: 4, name: "Lia", description: "A nervous wreck, meowed through the night, liked to do somersaults", status: "Adopted", location: "Seattle, WA", intake: "September 2022", exit: "October 2022", pair: null, hero: "photos/04/COVER.jpg", extra: [] },
+  { id: 5, name: "Lilly", description: "A large lady with thick eyeliner", status: "Adopted", location: "Seattle, WA", intake: "October 2022", exit: "November 2022", pair: "Maizy", hero: "photos/05/COVER.jpg", extra: ["photos/05/IMG_4297.jpg","photos/05/IMG_4308.jpg","photos/05/IMG_4318.jpg","photos/05/IMG_4330.jpg"] },
+  { id: 6, name: "Maizy", description: "A larger lady with thick eyeliner", status: "Adopted", location: "Seattle, WA", intake: "October 2022", exit: "November 2022", pair: "Lilly", hero: "photos/06/COVER.jpg", extra: ["photos/06/IMG_4433.jpg","photos/06/IMG_4441.jpg"] },
+  { id: 7, name: "Princess", description: "Terribly named tiny face, sprinted up the doorway upon adoption", status: "Adopted", location: "Seattle, WA", intake: "January 2023", exit: "March 2023", pair: "Panda", hero: "photos/07/COVER.jpg", extra: ["photos/07/IMG_4983.jpg"] },
+  { id: 8, name: "Panda", description: "Good boy with big bro energy", status: "Adopted", location: "Seattle, WA", intake: "January 2023", exit: "March 2023", pair: "Princess", hero: "photos/08/COVER.jpg", extra: ["photos/08/IMG_4970.jpg","photos/08/IMG_4992.jpg","photos/08/IMG_5099.jpg"] },
+  { id: 9, name: "Pickles", description: "Dwarf kitty, big eyes, spent his final days cuddling and napping", status: "Resting in peace", memorial: true, location: "Seattle, WA", intake: "March 2023", exit: "March 2023", pair: null, hero: "photos/09/COVER.jpg", extra: ["photos/09/IMG_5346.jpg","photos/09/IMG_5407.jpg"] },
+  { id: 10, name: "Grape Juice", description: "Introvert, hid in corner of bathroom", status: "Adopted", location: "Seattle, WA", intake: "April 2023", exit: "June 2023", pair: "Home Fries", hero: "photos/10/COVER.jpg", extra: ["photos/10/IMG_5701.jpg","photos/10/IMG_5723.jpg"] },
+  { id: 11, name: "Home Fries", description: "Probably should have been a barn cat", status: "Adopted", location: "Seattle, WA", intake: "April 2023", exit: "June 2023", pair: "Grape Juice", hero: "photos/11/COVER.jpg", extra: ["photos/11/IMG_5643.jpg","photos/11/IMG_5668.jpg"] },
+  { id: 12, name: "Nora", description: "One of our favorites, playful cutie", status: "Adopted", location: "Seattle, WA", intake: "August 2023", exit: "August 2023", pair: null, hero: "photos/12/COVER.jpg", extra: ["photos/12/IMG_6161.jpg","photos/12/IMG_6172.jpg"] },
+  { id: 13, name: "Elsa", description: "AKA Cat 2, wasn't really friends with Anna", status: "Adopted", location: "Boulder, CO", intake: "March 2024", exit: "March 2024", pair: "Anna", hero: "photos/13/COVER.jpg", extra: ["photos/13/IMG_7816.jpg","photos/13/IMG_7907.jpg"] },
+  { id: 14, name: "Anna", description: "AKA Cat 1, wasn't really friends with Elsa", status: "Adopted", location: "Boulder, CO", intake: "March 2024", exit: "March 2024", pair: "Elsa", hero: "photos/14/COVER.jpg", extra: ["photos/14/IMG_7893.jpg"] },
+  { id: 15, name: "Lacey", description: "AKA Barley Rigs; bullied Corn Rigs", status: "Adopted", location: "Boulder, CO", intake: "April 2024", exit: "April 2024", pair: "Phoebie", hero: "photos/15/COVER.jpg", extra: [] },
+  { id: 16, name: "Phoebie", description: "AKA Corn Rigs; friendly, cuddly, round belly", status: "Adopted", location: "Boulder, CO", intake: "April 2024", exit: "July 2024", pair: "Lacey", hero: "photos/16/COVER.jpg", extra: ["photos/16/IMG_8642.jpg","photos/16/IMG_8802.jpg","photos/16/IMG_8824.jpg"] },
+  { id: 17, name: "Annie", description: "Essentially a sundial for the apartment", status: "Adopted", location: "Boulder, CO", intake: "July 2024", exit: "December 2024", pair: "Alfie", hero: "photos/17/COVER.jpg", extra: ["photos/17/IMG_8928.jpg","photos/17/IMG_9480.jpg"] },
+  { id: 18, name: "Alfie", description: "Matted, smelly, extremely cute", status: "Adopted", location: "Boulder, CO", intake: "July 2024", exit: "December 2024", pair: "Annie", hero: "photos/18/COVER.jpg", extra: ["photos/18/IMG_9298.jpg","photos/18/IMG_9383.jpg","photos/18/IMG_9471.jpg","photos/18/IMG_9978.jpg"] },
+  { id: 19, name: "Athena", description: "Fancy breed, owner picked her back up after recovery", status: "Returned to owner", location: "Boulder, CO", intake: "March 2025", exit: "March 2025", pair: null, hero: "photos/19/IMG_0759.jpg", extra: ["photos/19/IMG_0791.jpg"] },
+  { id: 20, name: "Milli", description: "Spaz", status: "Adopted", location: "Boulder, CO", intake: "March 2025", exit: "April 2025", pair: null, hero: "photos/20/COVER.jpg", extra: ["photos/20/IMG_1374.jpg"] },
+  { id: 21, name: "Bullet", description: "Our first orange, came in recovery, goofball that liked movies", status: "Adopted", location: "Boulder, CO", intake: "May 2025", exit: "August 2025", pair: null, hero: "photos/21/COVER.jpg", extra: ["photos/21/IMG_1818.jpg","photos/21/IMG_2074.jpg","photos/21/IMG_2377.jpg"] },
+  { id: 22, name: "Sully", description: "Big boy fat sully, hurt when he walked on you", status: "Adopted", location: "Boulder, CO", intake: "September 2025", exit: "October 2025", pair: null, hero: "photos/22/COVER.jpg", extra: ["photos/22/IMG_2534.jpg","photos/22/IMG_2553.jpg"] },
+  { id: 23, name: "Philip the II", description: "Toothless, never sits down, had lots of boogers", status: "Adopted", location: "Boulder, CO", intake: "November 2025", exit: "March 31, 2026", pair: null, hero: "photos/23/COVER.jpg", extra: ["photos/23/IMG_3107.jpg","photos/23/IMG_3240.jpg","photos/23/IMG_3246.jpg","photos/23/IMG_3605.jpg"] },
+  { id: 24, name: "Beau", description: "Neurotic to the bone, bit ankles", status: "Adopted", location: "Boulder, CO", intake: "April 2026", exit: "April 2026", pair: null, hero: "photos/24/IMG_4074.jpg", extra: [] },
+  { id: 25, name: "Limpy", description: "A curious hoarder", status: "With us now", current: true, location: "Boulder, CO", intake: "April 2026", exit: null, pair: null, hero: "photos/25/IMG_4999.jpg", extra: ["photos/25/IMG_5011.jpg"] },
+];
+
+const tapeOrder = ['tape-red','tape-cobalt','tape-green','tape-amber','tape-cream'];
+
+// Parse a "Month YYYY" or "Month DD, YYYY" string to a Date
+function parseDate(str) {
+  if (!str) return null;
+  const d = new Date(str);
+  if (!isNaN(d)) return d;
+  // try "Month YYYY"
+  const m = str.match(/^(\w+)\s+(\d{4})$/);
+  if (m) return new Date(`${m[1]} 1, ${m[2]}`);
+  return null;
+}
+
+function duration(intake, exit) {
+  const start = parseDate(intake);
+  const end = exit ? parseDate(exit) : new Date();
+  if (!start) return '';
+  const diffMs = end - start;
+  const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+  if (diffDays < 14) {
+    const wks = Math.round(diffDays / 7);
+    return wks <= 1 ? '1 week' : `${wks} weeks`;
+  }
+  const diffMonths = (end.getFullYear() - start.getFullYear()) * 12 + (end.getMonth() - start.getMonth());
+  if (diffMonths < 24) {
+    const label = diffMonths === 1 ? '1 month' : `${diffMonths} months`;
+    return exit ? label : `${label} & counting`;
+  }
+  const yrs = Math.floor(diffMonths / 12);
+  const label = yrs === 1 ? '1 yr' : `${yrs} yrs`;
+  return exit ? label : `${label} & counting`;
+}
+
+function buildCard(cat) {
+  const tapeClass = tapeOrder[cat.id % tapeOrder.length];
+  const tapeClass2 = tapeOrder[(cat.id + 2) % tapeOrder.length];
+  const dur = duration(cat.intake, cat.exit);
+  const memorialMark = cat.memorial ? ' ✦' : '';
+
+  // Front
+  const front = document.createElement('div');
+  front.className = 'flip-front';
+
+  // Tape strips
+  const tape1 = document.createElement('div');
+  tape1.className = `card-tape ${tapeClass}`;
+  front.appendChild(tape1);
+
+  // Second tape on some cards (alternating by id)
+  if (cat.id % 3 !== 0) {
+    const tape2 = document.createElement('div');
+    tape2.className = `card-tape tape-second ${tapeClass2}`;
+    front.appendChild(tape2);
+  }
+
+  const photoWrap = document.createElement('div');
+  photoWrap.className = 'photo-wrap' + (cat.memorial ? ' memorial-photo' : '');
+  const img = document.createElement('img');
+  img.src = cat.hero;
+  img.alt = `${cat.name} the foster cat`;
+  img.loading = 'lazy';
+  photoWrap.appendChild(img);
+  front.appendChild(photoWrap);
+
+  const caption = document.createElement('div');
+  caption.className = 'caption';
+  const nameSpan = document.createElement('span');
+  nameSpan.className = 'cat-name';
+  nameSpan.textContent = cat.name;
+  const descSpan = document.createElement('span');
+  descSpan.className = 'cat-desc';
+  descSpan.textContent = cat.description;
+  caption.appendChild(nameSpan);
+  caption.appendChild(descSpan);
+  front.appendChild(caption);
+
+  // Current badge
+  if (cat.current) {
+    const badge = document.createElement('div');
+    badge.className = 'current-badge';
+    badge.textContent = 'with us now \u2665';
+    front.appendChild(badge);
+  }
+
+  // Back
+  const back = document.createElement('div');
+  back.className = 'flip-back';
+
+  function row(label, value) {
+    const r = document.createElement('div');
+    r.className = 'back-row';
+    const l = document.createElement('div');
+    l.className = 'back-label';
+    l.textContent = label;
+    const v = document.createElement('div');
+    v.className = 'back-value';
+    v.textContent = value;
+    r.appendChild(l);
+    r.appendChild(v);
+    return r;
+  }
+
+  const nameBack = document.createElement('div');
+  nameBack.style.cssText = 'font-family:"Shantell Sans",cursive;font-weight:700;font-size:16px;color:#1F1F1D;margin-bottom:2px;';
+  nameBack.textContent = cat.name + memorialMark;
+  back.appendChild(nameBack);
+
+  const divider = document.createElement('div');
+  divider.className = 'back-divider';
+  back.appendChild(divider);
+
+  back.appendChild(row('came', cat.intake));
+  back.appendChild(row('from', cat.location));
+
+  let statusText = cat.status;
+  if (cat.memorial) statusText = 'Resting in peace \u2726';
+  back.appendChild(row('status', statusText));
+
+  if (dur) back.appendChild(row('stayed', dur));
+  if (cat.pair) back.appendChild(row('with', cat.pair));
+
+  // More photos link
+  if (cat.extra && cat.extra.length > 0) {
+    const divider2 = document.createElement('div');
+    divider2.className = 'back-divider';
+    back.appendChild(divider2);
+
+    const moreBtn = document.createElement('button');
+    moreBtn.className = 'more-photos-link';
+    moreBtn.textContent = `${cat.extra.length} more photo${cat.extra.length > 1 ? 's' : ''} \u2192`;
+    moreBtn.setAttribute('aria-label', `See ${cat.extra.length} more photos of ${cat.name}`);
+    moreBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      openLightbox(cat.extra, cat.name, 0);
+    });
+    back.appendChild(moreBtn);
+  }
+
+  // Flip inner
+  const flipInner = document.createElement('div');
+  flipInner.className = 'flip-inner';
+  flipInner.appendChild(front);
+  flipInner.appendChild(back);
+
+  // Button wrapper
+  const btn = document.createElement('button');
+  btn.className = 'polaroid-btn';
+  btn.setAttribute('aria-label', `${cat.name}: ${cat.description}. Click to flip.`);
+  btn.setAttribute('aria-pressed', 'false');
+  btn.appendChild(flipInner);
+
+  // Assign rotation on load
+  const rot = (Math.random() * 10 - 5).toFixed(1);
+  flipInner.style.transform = `rotate(${rot}deg)`;
+  btn.dataset.rot = rot;
+
+  btn.addEventListener('click', () => {
+    const isFlipped = btn.classList.toggle('flipped');
+    btn.setAttribute('aria-pressed', isFlipped ? 'true' : 'false');
+    // Restore base rotation when not flipped
+    if (!isFlipped) {
+      flipInner.style.transform = `rotate(${btn.dataset.rot}deg)`;
+    } else {
+      flipInner.style.transform = `rotateY(180deg) rotate(${btn.dataset.rot}deg)`;
+    }
+  });
+
+  btn.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      btn.click();
+    }
+  });
+
+  // Hover: override inline transform
+  btn.addEventListener('mouseenter', () => {
+    if (!btn.classList.contains('flipped')) {
+      flipInner.style.transform = `rotate(0deg) translateY(-9px) scale(1.05)`;
+      flipInner.style.transition = 'transform 0.22s ease';
+      flipInner.style.zIndex = '10';
+    }
+  });
+  btn.addEventListener('mouseleave', () => {
+    if (!btn.classList.contains('flipped')) {
+      flipInner.style.transform = `rotate(${btn.dataset.rot}deg)`;
+      flipInner.style.transition = 'transform 0.55s cubic-bezier(.4,0,.2,1)';
+      flipInner.style.zIndex = '';
+    }
+  });
+
+  return btn;
+}
+
+// Render board
+const board = document.getElementById('board');
+cats.forEach(cat => board.appendChild(buildCard(cat)));
+
+// Lightbox
+let lbPhotos = [];
+let lbIndex = 0;
+let lbName = '';
+
+function openLightbox(photos, name, idx) {
+  lbPhotos = photos;
+  lbName = name;
+  lbIndex = idx;
+  updateLightbox();
+  document.getElementById('lightbox').classList.add('open');
+  document.getElementById('lb-img').focus();
+}
+
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('open');
+}
+
+function updateLightbox() {
+  const img = document.getElementById('lb-img');
+  img.src = lbPhotos[lbIndex];
+  img.alt = `${lbName} photo ${lbIndex + 1} of ${lbPhotos.length}`;
+  document.getElementById('lb-counter').textContent = `${lbIndex + 1} / ${lbPhotos.length}`;
+}
+
+document.getElementById('lb-close').addEventListener('click', closeLightbox);
+document.getElementById('lb-prev').addEventListener('click', () => {
+  lbIndex = (lbIndex - 1 + lbPhotos.length) % lbPhotos.length;
+  updateLightbox();
+});
+document.getElementById('lb-next').addEventListener('click', () => {
+  lbIndex = (lbIndex + 1) % lbPhotos.length;
+  updateLightbox();
+});
+document.getElementById('lightbox').addEventListener('click', (e) => {
+  if (e.target === document.getElementById('lightbox')) closeLightbox();
+});
+document.addEventListener('keydown', (e) => {
+  const lb = document.getElementById('lightbox');
+  if (!lb.classList.contains('open')) return;
+  if (e.key === 'Escape') closeLightbox();
+  if (e.key === 'ArrowLeft') { lbIndex = (lbIndex - 1 + lbPhotos.length) % lbPhotos.length; updateLightbox(); }
+  if (e.key === 'ArrowRight') { lbIndex = (lbIndex + 1) % lbPhotos.length; updateLightbox(); }
+});
+
+// Reduced motion: instant flip
+const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+if (mq.matches) {
+  document.querySelectorAll('.flip-inner').forEach(el => {
+    el.style.transition = 'none';
+  });
+}
+</script>
+</body>
+</html>
